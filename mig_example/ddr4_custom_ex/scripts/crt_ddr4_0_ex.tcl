@@ -55,7 +55,7 @@ proc checkRequiredFiles { origin_dir} {
  "[file normalize "$origin_dir/imports/temp_mem.txt"]"\
  "[file normalize "$origin_dir/imports/temp_second_mem.txt"]"\
  "[file normalize "$origin_dir/imports/ddr4_0_microblaze_mcs_0.sv"]"\
- "[file normalize "$origin_dir/sim_tb_top_behav.wcfg"]"\
+ "[file normalize "$origin_dir/sim/sim_tb_top_behav.wcfg"]"\
   ]
   foreach ifile $files {
     if { ![file isfile $ifile] } {
@@ -64,19 +64,13 @@ proc checkRequiredFiles { origin_dir} {
     }
   }
 
-  set files [list \
- "[file normalize "$origin_dir/ip/ddr4_0/ddr4_0.xci"]"\
- "[file normalize "$origin_dir/custom_parts_ddr4_2016_4_and_above_au15p.csv"]"\
-  ]
-  foreach ifile $files {
-    if { ![file isfile $ifile] } {
-      puts " Could not find remote file $ifile "
-      set status false
-    }
-  }
 
   return $status
 }
+
+#set default memory address map
+#address map ROW_RANK_COLUMN result low efficiency on DDR4, recommend ROW_COLUMN_BANK
+set add_map ROW_BANK_COLUMN
 # Set the reference directory for source file relative paths (by default the value is script directory path)
 set origin_dir "."
 
@@ -108,6 +102,7 @@ proc print_help {} {
   puts "$script_file"
   puts "$script_file -tclargs \[--origin_dir <path>\]"
   puts "$script_file -tclargs \[--project_name <name>\]"
+  puts "$script_file -tclargs \[--add_map <ROW_BANK_COLUMN|ROW_COLUMN_BANK>\]"
   puts "$script_file -tclargs \[--help\]\n"
   puts "Usage:"
   puts "Name                   Description"
@@ -129,6 +124,7 @@ if { $::argc > 0 } {
     set option [string trim [lindex $::argv $i]]
     switch -regexp -- $option {
       "--origin_dir"   { incr i; set origin_dir [lindex $::argv $i] }
+      "--add_map"   { incr i; set add_map [lindex $::argv $i] }
       "--project_name" { incr i; set _xil_proj_name_ [lindex $::argv $i] }
       "--help"         { print_help }
       default {
@@ -208,11 +204,11 @@ create_ip -name ddr4 -vendor xilinx.com -library ip -version 2.2 -module_name dd
 set_property -dict [list \
   CONFIG.C0.DDR4_AxiSelection {true} \
   CONFIG.C0.DDR4_DataWidth {32} \
-  CONFIG.C0.DDR4_Mem_Add_Map {ROW_BANK_COLUMN} \
+  CONFIG.C0.DDR4_Mem_Add_Map ${add_map} \
 ] [get_ips ddr4_0]
 
 set_property -dict [list \
-  CONFIG.C0.DDR4_CustomParts {${origin_dir}/custom_parts_ddr4_2016_4_and_above_au15p.csv} \
+  CONFIG.C0.DDR4_CustomParts {${origin_dir}/ddr_cfg/custom_parts_ddr4_2016_4_and_above_au15p.csv} \
   CONFIG.C0.DDR4_isCustom {true} \
 ] [get_ips ddr4_0]
 generate_target all [get_files ddr4_0.xci]
@@ -306,7 +302,7 @@ set files [list \
  [file normalize "${origin_dir}/imports/temp_mem.txt" ]\
  [file normalize "${origin_dir}/imports/temp_second_mem.txt" ]\
  [file normalize "${origin_dir}/imports/ddr4_0_microblaze_mcs_0.sv" ]\
- [file normalize "${origin_dir}/sim_tb_top_behav.wcfg" ]\
+ [file normalize "${origin_dir}/sim/sim_tb_top_behav.wcfg" ]\
 ]
 set added_files [add_files -fileset sim_1 $files]
 
