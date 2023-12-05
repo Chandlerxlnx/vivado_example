@@ -7,3 +7,4 @@ clean:
 cleanall: clean
 	rm -rf prj_*
 	rm -rf output
+	rm -rf .Xil
