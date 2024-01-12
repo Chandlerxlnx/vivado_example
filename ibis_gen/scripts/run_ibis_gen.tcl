@@ -2,7 +2,8 @@ create_project prj_ibis_gen ./proj_ibis_gen -part xa7s15csga225-1Q -force
 set_property design_mode PinPlanning [current_fileset]
 open_io_design -name ibis_io_1
 #read_xdc -no_add ./pinplan/top_ibis_gen.xdc -quiet_diff_pairs
-read_xdc ./pinplan/top_ibis_gen.xdc -quiet_diff_pairs
+#read_xdc ./pinplan/top_ibis_gen.xdc -quiet_diff_pairs
+read_csv ./pinplan/top_ibis_io.csv 
 #read_xdc ./pinplan/top_ibis_gen.xdc
 
 save_constraints -force
