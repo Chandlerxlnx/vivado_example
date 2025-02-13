@@ -1,0 +1,8 @@
+`pragma protect key_keyowner = "Xilinx", key_keyname= "xilinxt_2022_10", key_method = "rsa", key_public_key
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwifUMfX36AyhkNbimTSD
+bD655sND8hrEntxBLxq6FukTVB5lXJlUMO9ASdWDsclUPlUYc2ZNi5rMSheXAeb9
+hZuxAZF+ziGS9l5m12XwcUFLwy8/QLN5n/oxRQXlWXyvES//xwz4BTIVfLCFB0gq
+5J1rh2R5KqLPUtfxv7D75A/oI5yNibtW/QmSXs1THkvg839ftyXbW3OUkAvB+tqg
+DXKTIH6p/Lm0H4x1S5NucFVRrG8SsF6+0l03Gqc6F4sKlw++1TithusZfK2un1E1
+50HktEX9e7GaXc6uL0zQ0QSss766nkTslv1ZJ7i2VEgGVD0WQv53Hx5zyRW5o4xD
+/QIDAQAB
